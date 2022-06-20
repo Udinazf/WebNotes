@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>原理演示</title>
+    <style>
+        #result {
+            width: 300px;
+            height: 100px;
+            border: solid 2px #78a;
+        }
+    </style>
+</head>
+<body>
+    <div id="result"></div>
+    <script>
+        // 处理数据
+        function handle(data) {
+            // 获取result元素
+            const result = document.getElementById('result');
+            result.innerHTML = data.name;
+        }
+    </script>
+    <!-- 将本html通过右键，open with live server打开，本html网址为
+        http://127.0.0.1:5500/Ajax/codes/7-AJAX%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/2-JSONP/%E5%8E%9F%E7%90%86.html
+        使用下面这个script并非跨域 -->
+    <!-- <script src="./js/app.js"></script> -->
+
+    <!-- 上面的script的src与下面这个等同，下面这个src是通过上面的script在浏览器检查网络是获取的 -->
+    <!-- <script src="http://127.0.0.1:5500/Ajax/codes/7-AJAX%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/2-JSONP/js/app.js"></script> -->
+
+    <!-- <script src="file:///D:/Program%20Files/web/web_study/Ajax/codes/7-AJAX%E8%B7%A8%E5%9F%9F%E9%97%AE%E9%A2%98/2-JSONP/js/app.js"></script> -->
+
+    <script src="http://127.0.0.1:8000/jsonp-server"></script>
+</body>
+</html>
