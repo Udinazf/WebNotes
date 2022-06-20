@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>事件修饰符</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        *{
+            margin-top: 20px;
+        }
+        .demo1{
+            height: 50px;
+            background-color: skyblue;
+        }
+        .box1{
+            padding: 5px;
+            background-color: skyblue;
+        }
+        .box2{
+            padding: 5px;
+            background-color: orange;
+        }
+        .list{
+            width: 200px;
+            height: 200px;
+            background-color: peru;
+            /* 放不下li,生成滚动条 */
+            overflow: auto;
+        }
+        li{
+            height: 100px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 
+            Vue中的事件修饰符：
+                    1.prevent：阻止默认事件（常用）；
+                    2.stop：阻止事件冒泡（常用）；
+                    3.once：事件只触发一次（常用）；
+                    4.capture：使用事件的捕获模式；
+                    5.self：只有event.target是当前操作的元素时才触发事件；
+                    6.passive：事件的默认行为立即执行，无需等待事件回调执行完毕；
+    -->
+    <div id="root">
+        <h2>欢迎来到{{name}}学习</h2>
+        <!-- 阻止默认事件（常用） -->
+        <!-- prevent阻止默认事件，弹窗结束后不会跳转到https://www.bilibili.com/ -->
+        <a href="https://www.bilibili.com/" @click.prevent="showInfo">点我提示信息</a>
+
+        <!-- 阻止事件冒泡（常用） -->
+        <!-- 如果没有@click.stop，点击按钮时会冒泡到div，导致弹出两次弹框 -->
+        <div class="demo1" @click="showInfo">
+            <button @click.stop="showInfo">点我提示信息</button>
+            <!-- 修饰符可以连续写 -->
+            <!-- <a href="http://www.atguigu.com" @click.prevent.stop="showInfo">点我提示信息</a> -->
+        </div>
+
+        <!-- 事件只触发一次（常用） -->
+        <!-- 点第一次会弹窗，再点失效 -->
+        <button @click.once="showInfo">点我提示信息</button>
+
+        <!-- 使用事件的捕获模式 -->
+        <!-- 捕获是由外向内的，冒泡是由内向外的，原本点击div2的效果是先打印2，后打印1 -->
+        <!-- 使用@click.capture后在捕获阶段就处理事件，点击div2的效果是先打印1，后打印2 -->
+        <div class="box1" @click.capture="showMsg(1)">
+            div1
+            <div class="box2" @click="showMsg(2)">
+                div2
+            </div>
+        </div>
+
+        <!-- 只有event.target是当前操作的元素时才触发事件； -->
+        <!-- 点击按钮，event,target是按钮，虽然冒泡到div，但由于event,target不是div,不会触发div的事件 -->
+        <div class="demo1" @click.self="showInfo">
+            <button @click="showInfo">点我提示信息</button>
+        </div>
+
+        <!-- 事件的默认行为立即执行，无需等待事件回调执行完毕； -->
+        <!-- 原本效果是拨动鼠标滚轮后，输出100000个#，然后才执行默认的滚动条滚动，但现在使用了passive，会立即执行默认的滚动行为 -->
+        <!-- scroll给滚动条加上滚动事件，这里不添加passive也没有影响 -->
+        <!-- wheel给鼠标滚动轮的滚动添加滚动事件 -->
+        <ul @wheel.passive="demo" class="list">
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+        </ul>
+
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false //阻止 vue 在启动时生成生产提示。
+
+    new Vue({
+        el:'#root',
+        data:{
+            name:'bilibili'
+        },
+        methods: {
+            showInfo(e){
+                // 阻止默认行为，这里使得弹窗确定后不会跳转到https://www.bilibili.com/,可以使用@click.prevent代替
+                // e.preventDefault()
+                // 阻止事件冒泡
+                // e.stopPropagation();
+                alert('欢迎来到bilibili！')
+                // console.log(e.target)
+            },
+            showMsg(msg){
+                console.log(msg)
+            },
+            demo(){
+                for (let i = 0; i < 100000; i++) {
+                    console.log('#')
+                }
+                console.log('累坏了')
+            }
+        },
+    })
+</script>
+
+</html>
